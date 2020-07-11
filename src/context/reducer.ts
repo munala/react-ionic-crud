@@ -2,7 +2,10 @@ import * as actionTypes from './actionTypes';
 import * as interfaces from '../typescript/interfaces';
 import { initialState } from './state';
 
-export default (state: interfaces.AppStateInterface, action: interfaces.ActionInterface) => {
+export default (
+  state: interfaces.AppStateInterface,
+  action: interfaces.ActionInterface,
+): interfaces.AppStateInterface => {
   const { type, payload } = action;
 
   switch (type) {
@@ -103,6 +106,7 @@ export default (state: interfaces.AppStateInterface, action: interfaces.ActionIn
       return {
         ...state,
         loading: {
+          ...state.loading,
           [payload.page]: payload.loading,
         },
       };
@@ -111,8 +115,12 @@ export default (state: interfaces.AppStateInterface, action: interfaces.ActionIn
       return {
         ...state,
         error: {
+          ...state.error,
           [payload.page]: payload.error,
         },
       };
+
+    default:
+      return state;
   }
 };

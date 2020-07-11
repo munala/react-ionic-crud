@@ -1,6 +1,7 @@
 import { createContext } from 'react';
+import * as interfaces from '../typescript/interfaces';
 
-export const initialState = {
+export const initialState: interfaces.AppStateInterface = {
   user: {},
   color: {},
   colors: [],
@@ -12,12 +13,12 @@ export const initialState = {
   },
   loading: {
     user: false,
-    colors: false,
+    color: false,
     auth: false,
   },
   error: {
     user: null,
-    colors: null,
+    color: null,
     auth: null,
   },
 };

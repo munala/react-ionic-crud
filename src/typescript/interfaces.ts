@@ -6,22 +6,24 @@ export interface UserInterface {
 }
 
 export interface ColorInterface {
-  id: string;
-  name: string;
-  year: number;
-  color: string;
-  pantone_value: string;
+  id?: string;
+  name?: string;
+  year?: number;
+  color?: string;
+  pantone_value?: string;
 }
 
 export interface AuthInterface {
-  userId?: string;
+  userId?: string | null;
   loggedIn: boolean;
-  token?: string;
+  token?: string | null;
 }
 
 export interface AppStateInterface {
   user: UserInterface;
-  colors: [ColorInterface];
+  users: UserInterface[];
+  color: ColorInterface;
+  colors: ColorInterface[];
   auth: AuthInterface;
   loading: {
     user: boolean;
@@ -29,10 +31,11 @@ export interface AppStateInterface {
     auth: boolean;
   };
   error: {
-    user?: string;
-    color?: string;
-    auth?: string;
+    user?: string | null;
+    color?: string | null;
+    auth?: string | null;
   };
+  dispatch?: Function; // this is to allow passing dispatch inside value of context provider
 }
 
 export interface ActionInterface {
