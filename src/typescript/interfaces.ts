@@ -1,9 +1,8 @@
 export interface UserInterface {
-  id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar?: string;
+  id?: string;
+  email?: string;
+  first_name?: string;
+  last_name?: string;
 }
 
 export interface ColorInterface {
@@ -26,12 +25,12 @@ export interface AppStateInterface {
   auth: AuthInterface;
   loading: {
     user: boolean;
-    colors: boolean;
+    color: boolean;
     auth: boolean;
   };
   error: {
     user?: string;
-    colors?: string;
+    color?: string;
     auth?: string;
   };
 }
@@ -39,4 +38,11 @@ export interface AppStateInterface {
 export interface ActionInterface {
   type: string;
   payload: any;
+}
+
+export interface RequestArgumentInterface {
+  method: string;
+  path: string;
+  errorHandler: Function;
+  data?: any;
 }

@@ -1,24 +1,25 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
 export const initialState = {
   user: {},
+  color: {},
   colors: [],
   users: [],
   auth: {
     userId: null,
     loggedIn: false,
-    token: null
+    token: null,
   },
   loading: {
     user: false,
     colors: false,
-    auth: false
+    auth: false,
   },
   error: {
     user: null,
     colors: null,
-    auth: null
-  }
+    auth: null,
+  },
 };
 
 const AppContext = createContext(initialState);

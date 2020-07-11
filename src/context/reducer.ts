@@ -1,11 +1,8 @@
-import * as actionTypes from "./actionTypes";
-import * as interfaces from "../typescript/interfaces";
-import { initialState } from "./state";
+import * as actionTypes from './actionTypes';
+import * as interfaces from '../typescript/interfaces';
+import { initialState } from './state';
 
-export default (
-  state: interfaces.AppStateInterface,
-  action: interfaces.ActionInterface
-) => {
+export default (state: interfaces.AppStateInterface, action: interfaces.ActionInterface) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -15,12 +12,12 @@ export default (
         auth: {
           ...state.auth,
           userId: payload.id,
-          token: payload.token
+          token: payload.token,
         },
         loading: {
           ...state.loading,
-          auth: false
-        }
+          auth: false,
+        },
       };
 
     case actionTypes.LOGIN:
@@ -28,12 +25,12 @@ export default (
         ...state,
         auth: {
           ...state.auth,
-          token: payload.token
+          token: payload.token,
         },
         loading: {
           ...state.loading,
-          auth: false
-        }
+          auth: false,
+        },
       };
 
     case actionTypes.LOGOUT:
@@ -45,8 +42,18 @@ export default (
         colors: payload,
         loading: {
           ...state.loading,
-          colors: false
-        }
+          color: false,
+        },
+      };
+
+    case actionTypes.SET_COLOR:
+      return {
+        ...state,
+        color: payload,
+        loading: {
+          ...state.loading,
+          color: false,
+        },
       };
 
     case actionTypes.SET_USERS:
@@ -55,8 +62,8 @@ export default (
         users: payload,
         loading: {
           ...state.loading,
-          colors: false
-        }
+          user: false,
+        },
       };
 
     case actionTypes.SET_USER:
@@ -65,8 +72,8 @@ export default (
         user: payload,
         loading: {
           ...state.loading,
-          user: false
-        }
+          user: false,
+        },
       };
 
     case actionTypes.UPDATE_USER:
@@ -74,12 +81,12 @@ export default (
         ...state,
         user: {
           ...state.user,
-          ...payload
+          ...payload,
         },
         loading: {
           ...state.loading,
-          user: false
-        }
+          user: false,
+        },
       };
 
     case actionTypes.DELETE_USER:
@@ -88,24 +95,24 @@ export default (
         user: initialState.user,
         loading: {
           ...state.loading,
-          user: false
-        }
+          user: false,
+        },
       };
 
     case actionTypes.SET_LOADING:
       return {
         ...state,
         loading: {
-          [payload.page]: payload.loading
-        }
+          [payload.page]: payload.loading,
+        },
       };
 
     case actionTypes.SET_ERROR:
       return {
         ...state,
         error: {
-          [payload.page]: payload.error
-        }
+          [payload.page]: payload.error,
+        },
       };
   }
 };
