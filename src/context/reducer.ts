@@ -39,13 +39,13 @@ export default (
     case actionTypes.LOGOUT:
       return initialState;
 
-    case actionTypes.SET_USERS:
+    case actionTypes.SET_COLORS:
       return {
         ...state,
-        users: payload,
+        colors: payload,
         loading: {
           ...state.loading,
-          users: false
+          colors: false
         }
       };
 

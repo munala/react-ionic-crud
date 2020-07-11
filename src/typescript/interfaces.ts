@@ -6,6 +6,14 @@ export interface UserInterface {
   avatar?: string;
 }
 
+export interface ColorInterface {
+  id: string;
+  name: string;
+  year: number;
+  color: string;
+  pantone_value: string;
+}
+
 export interface AuthInterface {
   userId?: string;
   loggedIn: boolean;
@@ -14,16 +22,16 @@ export interface AuthInterface {
 
 export interface AppStateInterface {
   user: UserInterface;
-  users: [UserInterface];
+  colors: [ColorInterface];
   auth: AuthInterface;
   loading: {
     user: boolean;
-    users: boolean;
+    colors: boolean;
     auth: boolean;
   };
   error: {
     user?: string;
-    users?: string;
+    colors?: string;
     auth?: string;
   };
 }
