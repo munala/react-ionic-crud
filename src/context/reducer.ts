@@ -49,6 +49,16 @@ export default (
         }
       };
 
+    case actionTypes.SET_USERS:
+      return {
+        ...state,
+        users: payload,
+        loading: {
+          ...state.loading,
+          colors: false
+        }
+      };
+
     case actionTypes.SET_USER:
       return {
         ...state,

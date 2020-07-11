@@ -3,6 +3,7 @@ import { createContext } from "react";
 export const initialState = {
   user: {},
   colors: [],
+  users: [],
   auth: {
     userId: null,
     loggedIn: false,
