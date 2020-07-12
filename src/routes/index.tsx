@@ -59,7 +59,6 @@ const Routes: React.FC = () => {
             <ProtectedRoute path="/colors/:id" Component={Color} />
             <ProtectedRoute path="/users" Component={Users} exact />
             <ProtectedRoute path="/users/:id" Component={User} />
-            <ProtectedRoute path="/profile" Component={User} exact />
             <Route path="/" render={() => <Redirect to="/colors" />} exact />
           </IonRouterOutlet>
 
@@ -71,10 +70,6 @@ const Routes: React.FC = () => {
             <IonTabButton tab="users" href="/users">
               <IonIcon icon={people} />
               <IonLabel>Users</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="profile" href="/profile">
-              <IonIcon icon={person} />
-              <IonLabel>Profile</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>
