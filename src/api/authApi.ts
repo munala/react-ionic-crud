@@ -46,7 +46,10 @@ const authFunction = async (params: { user: UserInterface; dispatch: Function; t
 };
 
 // replacing mock data with real data since the api does not accept real data
-export const register = async (params: { user: UserInterface; dispatch: Function }) => {
+export const register = async (params: {
+  user: { email: string; password: string };
+  dispatch: Function;
+}) => {
   authFunction({
     user: params.user,
     dispatch: params.dispatch,
@@ -55,7 +58,10 @@ export const register = async (params: { user: UserInterface; dispatch: Function
 };
 
 // replacing mock data with real data since the api does not accept real data
-export const login = async (params: { user: UserInterface; dispatch: Function }) => {
+export const login = async (params: {
+  user: { email: string; password: string };
+  dispatch: Function;
+}) => {
   authFunction({
     user: params.user,
     dispatch: params.dispatch,

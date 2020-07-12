@@ -13,7 +13,6 @@ export const initialState: interfaces.AppStateInterface = {
     totalPages: 0,
   },
   auth: {
-    userId: null,
     loggedIn: false,
     token: null,
   },

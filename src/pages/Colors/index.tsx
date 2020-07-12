@@ -11,8 +11,11 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { RefresherEventDetail } from '@ionic/core';
 
 import AppContext from '../../context/state';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -44,16 +47,16 @@ const Colors: React.FC = () => {
     dispatch,
   } = useContext(AppContext);
 
-  const getColorList = () => {
-    getColors({ dispatch, page, perPage });
+  const getColorList = async () => {
+    await getColors({ dispatch, page, perPage });
   };
 
   useEffect(() => {
-    getColorList();
+    if (colors.length === 0) getColorList();
   }, []);
 
   useEffect(() => {
-    getColorList();
+    if (colors.length === 0) getColorList();
   }, [perPage, page]);
 
   const setPerPageValue = (value: string) => {
@@ -74,6 +77,12 @@ const Colors: React.FC = () => {
     history.push(`/colors/${id}`);
   };
 
+  const refresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    await getColorList();
+
+    event.detail.complete();
+  };
+
   if (loading) return <LoadingIndicator />;
 
   return (
@@ -83,16 +92,22 @@ const Colors: React.FC = () => {
           <IonTitle>Colors</IonTitle>
         </IonToolbar>
       </IonHeader>
+
+      <IonRefresher slot="fixed" onIonRefresh={refresh}>
+        <IonRefresherContent />
+      </IonRefresher>
+
       {error && (
         <IonItem>
           <IonLabel color="danger">{error}</IonLabel>
         </IonItem>
       )}
+
       <IonList>
         <IonListHeader>
           <IonLabel>Name</IonLabel>
+          <IonLabel>Hex Value</IonLabel>
           <IonLabel>Year</IonLabel>
-          <IonLabel>Pantone Value</IonLabel>
         </IonListHeader>
 
         {colors.map((color: ColorInterface) => (
@@ -103,14 +118,15 @@ const Colors: React.FC = () => {
             style={{ backgroundColor: color.color }}
           >
             <IonLabel>{color.name}</IonLabel>
+            <IonLabel>{color.color}</IonLabel>
             <IonLabel>{color.year}</IonLabel>
-            <IonLabel>{color.pantone_value || ''}</IonLabel>
           </IonItem>
         ))}
       </IonList>
 
       <IonItem>
         <IonLabel>Colors per page</IonLabel>
+
         <IonSelect
           value={perPage}
           placeholder="Select number of colors per page"
@@ -128,7 +144,9 @@ const Colors: React.FC = () => {
         <IonButton disabled={page === 1} onClick={() => setPage(page - 1)} color="light">
           Previous
         </IonButton>
+
         <IonLabel>{` Page ${page} of ${totalPages} `}</IonLabel>
+
         <IonButton disabled={page === totalPages} onClick={() => setPage(page + 1)} color="light">
           Next
         </IonButton>

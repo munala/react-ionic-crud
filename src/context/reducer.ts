@@ -14,7 +14,6 @@ export default (
         ...state,
         auth: {
           ...state.auth,
-          userId: payload.id,
           token: payload.token,
           loggedIn: true,
         },
@@ -62,7 +61,6 @@ export default (
       };
 
     case actionTypes.SET_USERS:
-      console.log(payload);
       return {
         ...state,
         users: payload,
@@ -83,11 +81,17 @@ export default (
       };
 
     case actionTypes.UPDATE_USER:
+      const newUser = {
+        ...state.user,
+        ...payload,
+      };
+
       return {
         ...state,
-        user: {
-          ...state.user,
-          ...payload,
+        user: newUser,
+        users: {
+          ...state.users,
+          list: [...state.users.list].map((user: interfaces.UserInterface) => (user.id === newUser.id ? newUser : user)),
         },
         loading: {
           ...state.loading,
@@ -99,6 +103,12 @@ export default (
       return {
         ...state,
         user: initialState.user,
+        users: {
+          ...state.users,
+          list: [...state.users.list].filter(
+            (user: interfaces.UserInterface) => user.id !== payload.id,
+          ),
+        },
         loading: {
           ...state.loading,
           user: false,

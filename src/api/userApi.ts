@@ -1,14 +1,14 @@
-import { Plugins } from '@capacitor/core';
 import sendRequest from './requestWrapper';
 import * as actionTypes from '../context/actionTypes';
 import { UserInterface } from '../typescript/interfaces';
 
-const { Storage } = Plugins;
-
 const getErrorHandler = (dispatch: Function) => (error: string) => {
   dispatch({
     type: actionTypes.SET_ERROR,
-    payload: { error, page: 'user' },
+    payload: {
+      error,
+      page: 'user',
+    },
   });
 };
 
@@ -22,20 +22,16 @@ const beginApiCall = (dispatch: Function) => {
   });
 };
 
-export const getUser = async (params: { dispatch: Function; userId?: string | null }) => {
-  const { dispatch } = params;
-  let { userId } = params;
-
-  if (!userId) {
-    const { value } = await Storage.get({ key: 'userId' });
-    userId = value;
-  }
+export const getUser = async (params: { dispatch: Function; id: string }) => {
+  const { dispatch, id } = params;
 
   beginApiCall(dispatch);
 
-  const { data } = await sendRequest({
+  const {
+    data: { data },
+  } = await sendRequest({
     method: 'get',
-    path: `users/${userId}`,
+    path: `users/${id}`,
     errorHandler: getErrorHandler(dispatch),
   });
 
@@ -46,7 +42,7 @@ export const getUser = async (params: { dispatch: Function; userId?: string | nu
 };
 
 export const getUsers = async (params: { page: number; perPage: number; dispatch: Function }) => {
-  const { page = 1, perPage = 20, dispatch } = params;
+  const { page, perPage, dispatch } = params;
 
   beginApiCall(dispatch);
 
@@ -64,49 +60,37 @@ export const getUsers = async (params: { page: number; perPage: number; dispatch
   });
 };
 
-export const updateUser = async (params: {
-  user: UserInterface;
-  dispatch: Function;
-  type: string;
-}) => {
+export const updateUser = async (params: { user: UserInterface; dispatch: Function }) => {
   const { dispatch, user } = params;
-
-  const { value: userId } = await Storage.get({ key: 'userId' });
 
   beginApiCall(dispatch);
 
-  const { error, ...userData } = await sendRequest({
+  const { data } = await sendRequest({
     method: 'put',
-    path: `users/${userId}`,
+    path: `users/${user.id}`,
     data: user,
     errorHandler: getErrorHandler(dispatch),
   });
 
   dispatch({
     type: actionTypes.UPDATE_USER,
-    payload: userData,
+    payload: data,
   });
 };
 
-export const deleteUser = async (params: {
-  user: UserInterface;
-  dispatch: Function;
-  type: string;
-}) => {
-  const { dispatch } = params;
-
-  const { value: userId } = await Storage.get({ key: 'userId' });
+export const deleteUser = async (params: { id: string | undefined; dispatch: Function }) => {
+  const { dispatch, id } = params;
 
   beginApiCall(dispatch);
 
-  const { error, ...userData } = await sendRequest({
+  await sendRequest({
     method: 'delete',
-    path: `users/${userId}`,
+    path: `users/${id}`,
     errorHandler: getErrorHandler(dispatch),
   });
 
   dispatch({
-    type: actionTypes.LOGOUT,
-    payload: userData,
+    type: actionTypes.DELETE_USER,
+    payload: { id },
   });
 };

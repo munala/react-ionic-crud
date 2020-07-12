@@ -3,6 +3,7 @@ export interface UserInterface {
   email?: string;
   first_name?: string;
   last_name?: string;
+  avatar?: string;
 }
 
 export interface UserListInterface {
@@ -24,7 +25,6 @@ export interface ColorListInterface {
 }
 
 export interface AuthInterface {
-  userId?: string | null;
   loggedIn: boolean;
   token?: string | null;
 }

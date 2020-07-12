@@ -7,13 +7,15 @@ import {
   IonSelectOption,
   IonSelect,
   IonButton,
-  IonListHeader,
   IonHeader,
   IonToolbar,
   IonTitle,
   IonAvatar,
+  IonRefresher,
+  IonRefresherContent,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { RefresherEventDetail } from '@ionic/core';
 
 import AppContext from '../../context/state';
 import LoadingIndicator from '../../components/LoadingIndicator';
@@ -34,10 +36,6 @@ const Users: React.FC = () => {
 
   const history = useHistory();
 
-  // generate and fill array with values from 1 to MAX_PER_PAGE
-  let perPageValues = new Array(MAX_PER_PAGE);
-  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
-
   const {
     users: { list: users, totalPages },
     loading: { user: loading },
@@ -45,17 +43,21 @@ const Users: React.FC = () => {
     dispatch,
   } = useContext(AppContext);
 
-  const getUserList = () => {
-    getUsers({ dispatch, page, perPage });
-  };
-
   useEffect(() => {
-    getUserList();
+    if (users.length === 0) getUserList();
   }, []);
 
   useEffect(() => {
-    getUserList();
+    if (users.length === 0) getUserList();
   }, [perPage, page]);
+
+  // generate and fill array with values from 1 to MAX_PER_PAGE
+  let perPageValues = new Array(MAX_PER_PAGE);
+  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
+
+  const getUserList = async () => {
+    await getUsers({ dispatch, page, perPage });
+  };
 
   const setPerPageValue = (value: string) => {
     setPageVariables({
@@ -75,7 +77,15 @@ const Users: React.FC = () => {
     history.push(`/users/${id}`);
   };
 
-  if (loading) return <LoadingIndicator />;
+  const refresh = async (event: CustomEvent<RefresherEventDetail>) => {
+    await getUserList();
+
+    event.detail.complete();
+  };
+
+  if (loading) {
+    return <LoadingIndicator />;
+  }
 
   return (
     <IonContent>
@@ -84,33 +94,33 @@ const Users: React.FC = () => {
           <IonTitle>Users</IonTitle>
         </IonToolbar>
       </IonHeader>
+
+      <IonRefresher slot="fixed" onIonRefresh={refresh}>
+        <IonRefresherContent />
+      </IonRefresher>
+
       {error && (
         <IonItem>
           <IonLabel color="danger">{error}</IonLabel>
         </IonItem>
       )}
-      <IonList>
-        <IonListHeader>
-          <IonLabel>Avatar</IonLabel>
-          <IonLabel>First Name</IonLabel>
-          <IonLabel>Last Name</IonLabel>
-          <IonLabel>Email</IonLabel>
-        </IonListHeader>
 
+      <IonList>
         {users.map((user: UserInterface) => (
           <IonItem key={user.id} button onClick={() => onItemClick(user.id)}>
             <IonAvatar slot="start">
               <img src={user.avatar} />
             </IonAvatar>
-            <IonLabel>{user.first_name}</IonLabel>
-            <IonLabel>{user.last_name}</IonLabel>
-            <IonLabel>{user.email}</IonLabel>
+            <IonLabel className="field">{user.first_name}</IonLabel>
+            <IonLabel className="field">{user.last_name}</IonLabel>
+            <IonLabel className="field">{user.email}</IonLabel>
           </IonItem>
         ))}
       </IonList>
 
       <IonItem>
         <IonLabel>Users per page</IonLabel>
+
         <IonSelect
           value={perPage}
           placeholder="Select number of users per page"
@@ -128,7 +138,9 @@ const Users: React.FC = () => {
         <IonButton disabled={page === 1} onClick={() => setPage(page - 1)} color="light">
           Previous
         </IonButton>
+
         <IonLabel>{` Page ${page} of ${totalPages} `}</IonLabel>
+
         <IonButton disabled={page === totalPages} onClick={() => setPage(page + 1)} color="light">
           Next
         </IonButton>
