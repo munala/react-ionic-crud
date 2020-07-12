@@ -36,15 +36,16 @@ const User: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
 
+  const history = useHistory();
+  const { id } = useParams();
+
   useEffect(() => {
     getUser({ id, dispatch });
-  }, []);
+  }, [id, dispatch]);
 
   useEffect(() => {
     setStateUser(user);
   }, [user]);
-
-  const history = useHistory();
 
   const switchEditMode = (edit: boolean) => {
     setEditMode(edit);
@@ -74,8 +75,6 @@ const User: React.FC = () => {
 
     history.goBack();
   };
-
-  const { id } = useParams();
 
   if (loading) return <LoadingIndicator />;
 

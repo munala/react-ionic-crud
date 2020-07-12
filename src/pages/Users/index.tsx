@@ -19,12 +19,16 @@ import { RefresherEventDetail } from '@ionic/core';
 
 import AppContext from '../../context/state';
 import LoadingIndicator from '../../components/LoadingIndicator';
+import NewUserInput from '../../components/NewUserInput';
 import { UserInterface } from '../../typescript/interfaces';
-import { getUsers } from '../../api/userApi';
+import { addUser, getUsers } from '../../api/userApi';
+import logo from '../../assets/logos/Power-Symbol0.png';
 
 import './styles.css';
 
 const MAX_PER_PAGE = 20;
+
+const DEFAULT_AVATAR_URL = logo;
 
 const Users: React.FC = () => {
   const [pageVariables, setPageVariables] = useState({
@@ -83,6 +87,10 @@ const Users: React.FC = () => {
     event.detail.complete();
   };
 
+  const submitUser = async (user: UserInterface) => {
+    await addUser({ user, dispatch });
+  };
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -105,11 +113,13 @@ const Users: React.FC = () => {
         </IonItem>
       )}
 
+      <NewUserInput onSubmit={submitUser} />
+
       <IonList>
         {users.map((user: UserInterface) => (
           <IonItem key={user.id} button onClick={() => onItemClick(user.id)}>
             <IonAvatar slot="start">
-              <img src={user.avatar} />
+              <img src={user.avatar || DEFAULT_AVATAR_URL} />
             </IonAvatar>
             <IonLabel className="field">{user.first_name}</IonLabel>
             <IonLabel className="field">{user.last_name}</IonLabel>

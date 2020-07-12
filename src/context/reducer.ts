@@ -80,6 +80,15 @@ export default (
         },
       };
 
+    case actionTypes.ADD_USER:
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          list: [payload, ...state.users.list],
+        },
+      };
+
     case actionTypes.UPDATE_USER:
       const newUser = {
         ...state.user,

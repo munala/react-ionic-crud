@@ -68,9 +68,11 @@ const AuthForm = (props: { title: string; onSubmit: Function; onSwitchMode: Func
             />
           </IonItem>
 
-          <IonItem>
-            <IonLabel color="danger">{errors.email}</IonLabel>
-          </IonItem>
+          {errors.email && (
+            <IonItem>
+              <IonLabel color="danger">{errors.email}</IonLabel>
+            </IonItem>
+          )}
 
           <IonItemDivider>Password</IonItemDivider>
           <IonItem>
@@ -85,9 +87,11 @@ const AuthForm = (props: { title: string; onSubmit: Function; onSwitchMode: Func
             />
           </IonItem>
 
-          <IonItem>
-            <IonLabel color="danger">{errors.password}</IonLabel>
-          </IonItem>
+          {errors.password && (
+            <IonItem>
+              <IonLabel color="danger">{errors.password}</IonLabel>
+            </IonItem>
+          )}
 
           <IonButton disabled={!email || !password} onClick={handleClick} color="primary">
             {title.toUpperCase()}

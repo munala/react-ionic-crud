@@ -41,6 +41,22 @@ export const getUser = async (params: { dispatch: Function; id: string }) => {
   });
 };
 
+export const addUser = async (params: { user: UserInterface; dispatch: Function }) => {
+  const { user, dispatch } = params;
+
+  const { data } = await sendRequest({
+    method: 'post',
+    path: 'users',
+    data: user,
+    errorHandler: getErrorHandler(dispatch),
+  });
+
+  dispatch({
+    type: actionTypes.ADD_USER,
+    payload: data,
+  });
+};
+
 export const getUsers = async (params: { page: number; perPage: number; dispatch: Function }) => {
   const { page, perPage, dispatch } = params;
 
