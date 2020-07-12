@@ -11,6 +11,7 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
+  IonAvatar,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 
@@ -90,6 +91,7 @@ const Users: React.FC = () => {
       )}
       <IonList>
         <IonListHeader>
+          <IonLabel>Avatar</IonLabel>
           <IonLabel>First Name</IonLabel>
           <IonLabel>Last Name</IonLabel>
           <IonLabel>Email</IonLabel>
@@ -97,6 +99,9 @@ const Users: React.FC = () => {
 
         {users.map((user: UserInterface) => (
           <IonItem key={user.id} button onClick={() => onItemClick(user.id)}>
+            <IonAvatar slot="start">
+              <img src={user.avatar} />
+            </IonAvatar>
             <IonLabel>{user.first_name}</IonLabel>
             <IonLabel>{user.last_name}</IonLabel>
             <IonLabel>{user.email}</IonLabel>
