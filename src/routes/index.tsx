@@ -10,8 +10,7 @@ import {
   IonTabButton,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { person, people, albums } from 'ionicons/icons';
-import { Plugins } from '@capacitor/core';
+import { people, albums } from 'ionicons/icons';
 
 import ProtectedRoute from '../wrappers/ProtectedRoute';
 import Colors from '../pages/Colors';
@@ -19,36 +18,12 @@ import Color from '../pages/Color';
 import Users from '../pages/Users';
 import User from '../pages/User';
 import Auth from '../pages/Auth';
-import LoadingIndicator from '../components/LoadingIndicator';
 import AppContext from '../context/state';
-import { LOGIN } from '../context/actionTypes';
-
-const { Storage } = Plugins;
 
 const Routes: React.FC = () => {
-  const [loading, setLoading] = useState(false);
-
   const {
     auth: { loggedIn },
-    dispatch,
   } = useContext(AppContext);
-
-  useEffect(() => {
-    Storage.get({
-      key: 'token',
-    }).then((result: { value: string | null }) => {
-      setLoading(false);
-
-      if (result.value) {
-        dispatch({
-          type: LOGIN,
-          payload: { token: result.value },
-        });
-      }
-    });
-  });
-
-  if (loading) return <LoadingIndicator />;
 
   return (
     <IonApp>
