@@ -41,7 +41,7 @@ export const getColors = async (params: { page: number; perPage: number; dispatc
   beginApiCall(dispatch);
 
   const {
-    data: { data },
+    data: { data: list, total_pages: totalPages },
   } = await sendRequest({
     method: 'get',
     path: `colors?page=${page}&per_page=${perPage}`,
@@ -50,6 +50,6 @@ export const getColors = async (params: { page: number; perPage: number; dispatc
 
   dispatch({
     type: actionTypes.SET_COLORS,
-    payload: data,
+    payload: { list, totalPages },
   });
 };

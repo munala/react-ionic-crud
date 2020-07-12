@@ -50,7 +50,7 @@ export const getUsers = async (params: { page: number; per_page: number; dispatc
 
   beginApiCall(dispatch);
 
-  const { data } = await sendRequest({
+  const { data: list, totalPages } = await sendRequest({
     method: 'get',
     path: `users?page=${page}&per_page=${per_page}`,
     errorHandler: getErrorHandler(dispatch),
@@ -58,7 +58,7 @@ export const getUsers = async (params: { page: number; per_page: number; dispatc
 
   dispatch({
     type: actionTypes.SET_USERS,
-    payload: data,
+    payload: { list, totalPages },
   });
 };
 

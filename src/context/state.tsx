@@ -4,8 +4,14 @@ import * as interfaces from '../typescript/interfaces';
 export const initialState: interfaces.AppStateInterface = {
   user: {},
   color: {},
-  colors: [],
-  users: [],
+  colors: {
+    list: [],
+    totalPages: 0,
+  },
+  users: {
+    list: [],
+    totalPages: 0,
+  },
   auth: {
     userId: null,
     loggedIn: false,

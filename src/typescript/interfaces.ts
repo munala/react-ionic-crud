@@ -5,12 +5,22 @@ export interface UserInterface {
   last_name?: string;
 }
 
+export interface UserListInterface {
+  totalPages: number;
+  list: UserInterface[];
+}
+
 export interface ColorInterface {
   id?: string;
   name?: string;
   year?: number;
   color?: string;
   pantone_value?: string;
+}
+
+export interface ColorListInterface {
+  totalPages: number;
+  list: ColorInterface[];
 }
 
 export interface AuthInterface {
@@ -21,9 +31,9 @@ export interface AuthInterface {
 
 export interface AppStateInterface {
   user: UserInterface;
-  users: UserInterface[];
+  users: UserListInterface;
   color: ColorInterface;
-  colors: ColorInterface[];
+  colors: ColorListInterface;
   auth: AuthInterface;
   loading: {
     user: boolean;

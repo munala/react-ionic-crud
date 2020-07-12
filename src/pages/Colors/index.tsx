@@ -21,16 +21,21 @@ import './styles.css';
 const MAX_PER_PAGE = 20;
 
 const Colors: React.FC = () => {
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(MAX_PER_PAGE);
+  const [pageVariables, setPageVariables] = useState({
+    page: 1,
+    perPage: MAX_PER_PAGE,
+  });
+
+  const { page, perPage } = pageVariables;
+
   const history = useHistory();
 
   // generate and fill array with values from 1 to MAX_PER_PAGE
-  let numberArray = new Array(MAX_PER_PAGE);
-  numberArray = [...numberArray].map((number: undefined, index: number) => index + 1);
+  let perPageValues = new Array(MAX_PER_PAGE);
+  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
 
   const {
-    colors,
+    colors: { list: colors, totalPages },
     loading: { color: loading },
     error: { color: error },
     dispatch,
@@ -48,9 +53,18 @@ const Colors: React.FC = () => {
     getColorList();
   }, [perPage, page]);
 
-  const selectPerPageValue = (value: string) => {
-    setPage(1);
-    setPerPage(parseInt(value, 10));
+  const setPerPageValue = (value: string) => {
+    setPageVariables({
+      page: 1,
+      perPage: parseInt(value, 10),
+    });
+  };
+
+  const setPage = (pageValue: number) => {
+    setPageVariables({
+      ...pageVariables,
+      page: pageValue,
+    });
   };
 
   const onItemClick = (id: string | undefined) => {
@@ -92,9 +106,9 @@ const Colors: React.FC = () => {
         <IonSelect
           value={perPage}
           placeholder="Select number of colors per page"
-          onIonChange={(e) => selectPerPageValue(e.detail.value)}
+          onIonChange={(e) => setPerPageValue(e.detail.value)}
         >
-          {numberArray.map((perPageValue: number) => (
+          {perPageValues.map((perPageValue: number) => (
             <IonSelectOption key={perPageValue} value={perPageValue}>
               {perPageValue}
             </IonSelectOption>
@@ -106,8 +120,8 @@ const Colors: React.FC = () => {
         <IonButton disabled={page === 1} onClick={() => setPage(page - 1)} color="light">
           Previous
         </IonButton>
-        <IonLabel>{` Page ${page} `}</IonLabel>
-        <IonButton disabled={colors.length === 0} onClick={() => setPage(page + 1)} color="light">
+        <IonLabel>{` Page ${page} of ${totalPages} `}</IonLabel>
+        <IonButton disabled={page === totalPages} onClick={() => setPage(page + 1)} color="light">
           Next
         </IonButton>
       </IonItem>
