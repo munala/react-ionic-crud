@@ -1,37 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
 import AppContext from '../../context/state';
 import AuthInput from '../../components/AuthInput';
-import { AppStateInterface } from '../../typescript/interfaces';
 import { login, register } from '../../api/authApi';
+import LoadingIndicator from '../../components/LoadingIndicator';
 import './styles.css';
 
 const Auth: React.FC = () => {
   const [title, setTitle] = useState('login');
 
+  const {
+    dispatch,
+    auth: { loggedIn },
+    loading: { auth: loading },
+  } = useContext(AppContext);
+
   const switchMode = () => setTitle(title === 'login' ? 'register' : 'login');
   const authAction = title === 'login' ? login : register;
 
-  return (
-    <AppContext.Consumer>
-      {(state: AppStateInterface) => {
-        const {
-          dispatch,
-          auth: { loggedIn },
-        } = state;
+  const submit = (user: { email: string; password: string }) => {
+    authAction({ user, dispatch });
+  };
 
-        if (loggedIn) {
-          return <Redirect to="/colors" />;
-        }
+  if (loggedIn) {
+    return <Redirect to="/colors" />;
+  }
 
-        const submit = (user: { email: string; password: string }) => {
-          authAction({ user, dispatch });
-        };
+  if (loading) return <LoadingIndicator />;
 
-        return <AuthInput title={title} onSwitchMode={switchMode} onSubmit={submit} />;
-      }}
-    </AppContext.Consumer>
-  );
+  return <AuthInput title={title} onSwitchMode={switchMode} onSubmit={submit} />;
 };
 
 export default Auth;
