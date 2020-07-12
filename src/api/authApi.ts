@@ -2,6 +2,7 @@ import { Plugins } from '@capacitor/core';
 import sendRequest from './requestWrapper';
 import * as actionTypes from '../context/actionTypes';
 import { UserInterface } from '../typescript/interfaces';
+import { mockRegistrationData, mockLoginData } from './mocks';
 
 const { Storage } = Plugins;
 
@@ -52,16 +53,20 @@ const authFunction = async (params: { user: UserInterface; dispatch: Function; t
   });
 };
 
+// replacing mock data with real data since the api does not accept real data
 export const register = async (params: { user: UserInterface; dispatch: Function }) => {
   authFunction({
-    ...params,
+    user: mockRegistrationData,
+    dispatch: params.dispatch,
     type: actionTypes.REGISTER,
   });
 };
 
+// replacing mock data with real data since the api does not accept real data
 export const login = async (params: { user: UserInterface; dispatch: Function }) => {
   authFunction({
-    ...params,
+    user: mockLoginData,
+    dispatch: params.dispatch,
     type: actionTypes.LOGIN,
   });
 };

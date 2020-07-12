@@ -16,6 +16,7 @@ export default (
           ...state.auth,
           userId: payload.id,
           token: payload.token,
+          loggedIn: true,
         },
         loading: {
           ...state.loading,
@@ -29,6 +30,7 @@ export default (
         auth: {
           ...state.auth,
           token: payload.token,
+          loggedIn: true,
         },
         loading: {
           ...state.loading,

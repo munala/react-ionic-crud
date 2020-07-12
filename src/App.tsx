@@ -1,9 +1,5 @@
 import React, { useReducer } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
-import { IonApp, IonRouterOutlet } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import Auth from './pages/Auth';
-import Home from './pages/Home';
+import Routes from './routes';
 import AppContext, { initialState } from './context/state';
 import reducer from './context/reducer';
 
@@ -23,17 +19,7 @@ const App: React.FC = () => {
 
   return (
     <AppContext.Provider value={{ ...state, dispatch }}>
-      <IonApp>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Switch>
-              <Route path="/auth" component={Auth} exact />
-              <Route path="/" render={() => <Redirect to="/colors" />} exact />
-              <Home />
-            </Switch>
-          </IonRouterOutlet>
-        </IonReactRouter>
-      </IonApp>
+      <Routes />
     </AppContext.Provider>
   );
 };

@@ -21,6 +21,7 @@ export const initialState: interfaces.AppStateInterface = {
     color: null,
     auth: null,
   },
+  dispatch: () => {},
 };
 
 const AppContext = createContext(initialState);

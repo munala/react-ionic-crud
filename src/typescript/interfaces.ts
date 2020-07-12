@@ -35,7 +35,7 @@ export interface AppStateInterface {
     color?: string | null;
     auth?: string | null;
   };
-  dispatch?: Function; // this is to allow passing dispatch inside value of context provider
+  dispatch: Function; // this is to allow passing dispatch inside value of context provider
 }
 
 export interface ActionInterface {
@@ -48,4 +48,5 @@ export interface RequestArgumentInterface {
   path: string;
   errorHandler: Function;
   data?: any;
+  callback?: Function;
 }
