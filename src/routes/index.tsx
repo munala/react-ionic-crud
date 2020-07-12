@@ -10,7 +10,7 @@ import {
   IonTabButton,
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { person, people, albums } from 'ionicons/icons';
 import ProtectedRoute from '../wrappers/ProtectedRoute';
 import Colors from '../pages/Colors';
 import Color from '../pages/Color';
@@ -28,25 +28,25 @@ const Routes: React.FC = () => (
           <IonTabs>
             <IonRouterOutlet>
               <Route path="/auth" component={Auth} exact />
-              <Route path="/" render={() => <Redirect to="/colors" />} exact />
               <ProtectedRoute path="/colors" Component={Colors} exact />
               <ProtectedRoute path="/colors/:id" Component={Color} />
               <ProtectedRoute path="/users" Component={Users} exact />
               <ProtectedRoute path="/users/:id" Component={User} />
-              <ProtectedRoute path="/users/me" Component={User} exact />
+              <ProtectedRoute path="/profile" Component={User} exact />
               <Route path="/" render={() => <Redirect to="/colors" />} exact />
             </IonRouterOutlet>
+
             <IonTabBar slot="bottom" style={state.auth.loggedIn ? {} : { display: 'none' }}>
               <IonTabButton tab="colors" href="/colors">
-                <IonIcon icon={triangle} />
+                <IonIcon icon={albums} />
                 <IonLabel>Colors</IonLabel>
               </IonTabButton>
               <IonTabButton tab="users" href="/users">
-                <IonIcon icon={ellipse} />
+                <IonIcon icon={people} />
                 <IonLabel>Users</IonLabel>
               </IonTabButton>
-              <IonTabButton tab="user" href="/users/me">
-                <IonIcon icon={square} />
+              <IonTabButton tab="profile" href="/profile">
+                <IonIcon icon={person} />
                 <IonLabel>Profile</IonLabel>
               </IonTabButton>
             </IonTabBar>

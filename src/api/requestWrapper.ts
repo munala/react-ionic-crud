@@ -10,7 +10,6 @@ const { Storage } = Plugins;
 const baseURL = 'https://reqres.in/api/';
 
 export default async (params: RequestArgumentInterface) => {
-  console.log(params);
   const { value: token } = await Storage.get({ key: 'token' });
 
   const instance = axios.create({
