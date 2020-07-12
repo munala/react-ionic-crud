@@ -8,6 +8,9 @@ import {
   IonSelect,
   IonButton,
   IonListHeader,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 
@@ -75,6 +78,11 @@ const Colors: React.FC = () => {
 
   return (
     <IonContent>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Colors</IonTitle>
+        </IonToolbar>
+      </IonHeader>
       {error && (
         <IonItem>
           <IonLabel color="danger">{error}</IonLabel>

@@ -18,12 +18,14 @@ const beginApiCall = (dispatch: Function) => {
   });
 };
 
-export const getColor = async (params: { dispatch: Function; id?: string | null }) => {
+export const getColor = async (params: { dispatch: Function; id: string }) => {
   const { dispatch, id } = params;
 
   beginApiCall(dispatch);
 
-  const { data } = await sendRequest({
+  const {
+    data: { data },
+  } = await sendRequest({
     method: 'get',
     path: `colors/${id}`,
     errorHandler: getErrorHandler(dispatch),

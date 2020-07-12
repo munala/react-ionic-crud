@@ -1,26 +1,81 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonItem,
+  IonLabel,
+  IonBackButton,
+  IonButtons,
 } from '@ionic/react';
-import ExploreContainer from '../../components/ExploreContainer';
+import { useParams } from 'react-router-dom';
+import LoadingIndicator from '../../components/LoadingIndicator';
+import { getColor } from '../../api/colorApi';
+
+import AppContext from '../../context/state';
+
 import './styles.css';
 
-const Tab3: React.FC = () => (
-  <IonPage>
-    <IonHeader>
-      <IonToolbar>
-        <IonTitle>Tab 3</IonTitle>
-      </IonToolbar>
-    </IonHeader>
-    <IonContent>
-      <IonHeader collapse="condense">
+const Color: React.FC = () => {
+  const {
+    color,
+    loading: { color: loading },
+    error: { color: error },
+    dispatch,
+  } = useContext(AppContext);
+
+  const { id } = useParams();
+
+  useEffect(() => {
+    getColor({ id, dispatch });
+  }, []);
+
+  if (loading) return <LoadingIndicator />;
+
+  return (
+    <IonPage>
+      <IonHeader>
         <IonToolbar>
-          <IonTitle size="large">Tab 3</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="colors" />
+          </IonButtons>
+          <IonTitle>{color.name}</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <ExploreContainer name="Tab 3 page" />
-    </IonContent>
-  </IonPage>
-);
 
-export default Tab3;
+      <IonContent>
+        {error && (
+          <IonItem>
+            <IonLabel color="danger">{error}</IonLabel>
+          </IonItem>
+        )}
+
+        <IonItem>
+          <IonLabel color="primary">Name</IonLabel>
+          <IonLabel color="secondary">{color.name}</IonLabel>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel color="primary">Hex Value</IonLabel>
+          <IonLabel color="secondary">{color.color}</IonLabel>
+        </IonItem>
+
+        <IonItem>
+          <IonLabel color="primary">Year</IonLabel>
+          <IonLabel color="secondary">{color.year}</IonLabel>
+        </IonItem>
+
+        {color.pantone_value && (
+          <IonItem>
+            <IonLabel color="primary">Pantone Value</IonLabel>
+            <IonLabel color="secondary">{color.pantone_value}</IonLabel>
+          </IonItem>
+        )}
+      </IonContent>
+    </IonPage>
+  );
+};
+
+export default Color;
