@@ -90,9 +90,9 @@ const Colors: React.FC = () => {
       )}
       <IonList>
         <IonListHeader>
-          <IonLabel>NAME</IonLabel>
-          <IonLabel>YEAR</IonLabel>
-          <IonLabel>PANTONE VALUE</IonLabel>
+          <IonLabel>Name</IonLabel>
+          <IonLabel>Year</IonLabel>
+          <IonLabel>Pantone Value</IonLabel>
         </IonListHeader>
 
         {colors.map((color: ColorInterface) => (

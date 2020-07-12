@@ -33,19 +33,20 @@ const Routes: React.FC = () => {
     dispatch,
   } = useContext(AppContext);
 
-  // useEffect(() => {
-  //   Storage.get({
-  //     key: 'token',
-  //   }).then((result: { value: string | null }) => {
-  //     setLoading(false);
-  //     if (result.value) {
-  //       dispatch({
-  //         type: LOGIN,
-  //         payload: { token: result.value },
-  //       });
-  //     }
-  //   });
-  // });
+  useEffect(() => {
+    Storage.get({
+      key: 'token',
+    }).then((result: { value: string | null }) => {
+      setLoading(false);
+
+      if (result.value) {
+        dispatch({
+          type: LOGIN,
+          payload: { token: result.value },
+        });
+      }
+    });
+  });
 
   if (loading) return <LoadingIndicator />;
 

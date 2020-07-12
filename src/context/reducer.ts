@@ -62,6 +62,7 @@ export default (
       };
 
     case actionTypes.SET_USERS:
+      console.log(payload);
       return {
         ...state,
         users: payload,

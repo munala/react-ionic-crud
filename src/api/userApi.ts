@@ -45,14 +45,16 @@ export const getUser = async (params: { dispatch: Function; userId?: string | nu
   });
 };
 
-export const getUsers = async (params: { page: number; per_page: number; dispatch: Function }) => {
-  const { page = 1, per_page = 20, dispatch } = params;
+export const getUsers = async (params: { page: number; perPage: number; dispatch: Function }) => {
+  const { page = 1, perPage = 20, dispatch } = params;
 
   beginApiCall(dispatch);
 
-  const { data: list, totalPages } = await sendRequest({
+  const {
+    data: { data: list, total_pages: totalPages },
+  } = await sendRequest({
     method: 'get',
-    path: `users?page=${page}&per_page=${per_page}`,
+    path: `users?page=${page}&per_page=${perPage}`,
     errorHandler: getErrorHandler(dispatch),
   });
 
