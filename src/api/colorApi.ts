@@ -35,14 +35,16 @@ export const getColor = async (params: { dispatch: Function; id?: string | null 
   });
 };
 
-export const getColors = async (params: { page: number; per_page: number; dispatch: Function }) => {
-  const { page = 1, per_page = 20, dispatch } = params;
+export const getColors = async (params: { page: number; perPage: number; dispatch: Function }) => {
+  const { page = 1, perPage = 6, dispatch } = params;
 
   beginApiCall(dispatch);
 
-  const { data } = await sendRequest({
+  const {
+    data: { data },
+  } = await sendRequest({
     method: 'get',
-    path: `colors?page=${page}&per_page=${per_page}`,
+    path: `colors?page=${page}&per_page=${perPage}`,
     errorHandler: getErrorHandler(dispatch),
   });
 
