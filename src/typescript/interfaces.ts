@@ -65,7 +65,7 @@ export interface ActionInterface {
 export interface RequestArgumentInterface {
   method: string;
   path: string;
-  errorHandler: Function;
+  onSuccess: Function;
+  onError: Function;
   data?: any;
-  callback?: Function;
 }

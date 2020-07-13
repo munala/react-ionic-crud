@@ -13,8 +13,17 @@ import {
   IonLabel,
 } from '@ionic/react';
 
-const AuthForm = (props: { title: string; onSubmit: Function; onSwitchMode: Function }) => {
-  const { title, onSubmit, onSwitchMode } = props;
+const MINIMUM_CHARACTERS = 4;
+
+const AuthForm = (props: {
+  title: string;
+  onSubmit: Function;
+  onSwitchMode: Function;
+  error: string | null | undefined;
+}) => {
+  const {
+    title, onSubmit, onSwitchMode, error,
+  } = props;
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [errors, setErrors] = useState({ email: '', password: '' });
@@ -38,9 +47,14 @@ const AuthForm = (props: { title: string; onSubmit: Function; onSwitchMode: Func
 
     if (!validEmail) setErrors({ ...errors, email: 'Invalid email' });
 
-    const validPassword = password.length >= 8;
+    const validPassword = password.length >= MINIMUM_CHARACTERS;
 
-    if (!validPassword) setErrors({ ...errors, password: 'Minimum of 8 characters are required' });
+    if (!validPassword) {
+      setErrors({
+        ...errors,
+        password: `Minimum of ${MINIMUM_CHARACTERS} characters are required`,
+      });
+    }
 
     return validEmail && validPassword;
   };
@@ -52,7 +66,11 @@ const AuthForm = (props: { title: string; onSubmit: Function; onSwitchMode: Func
           <IonTitle>{title.toUpperCase()}</IonTitle>
         </IonToolbar>
       </IonHeader>
-
+      {error && (
+        <IonItem>
+          <IonLabel color="danger">{error}</IonLabel>
+        </IonItem>
+      )}
       <IonContent>
         <IonList>
           <IonItemDivider>Email</IonItemDivider>

@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Redirect } from 'react-router-dom';
+
 import AppContext from '../../context/state';
 import AuthInput from '../../components/AuthInput';
 import { login, register } from '../../api/authApi';
@@ -13,6 +14,7 @@ const Auth: React.FC = () => {
     dispatch,
     auth: { loggedIn },
     loading: { auth: loading },
+    error: { auth: error },
   } = useContext(AppContext);
 
   const switchMode = () => setTitle(title === 'login' ? 'register' : 'login');
@@ -28,7 +30,7 @@ const Auth: React.FC = () => {
 
   if (loading) return <LoadingIndicator />;
 
-  return <AuthInput title={title} onSwitchMode={switchMode} onSubmit={submit} />;
+  return <AuthInput title={title} onSwitchMode={switchMode} onSubmit={submit} error={error} />;
 };
 
 export default Auth;

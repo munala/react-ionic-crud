@@ -19,22 +19,23 @@ export default async (params: RequestArgumentInterface) => {
   instance.defaults.headers.common.Authorization = token;
 
   const {
-    method, path, data, errorHandler,
+    method, path, data, onSuccess, onError,
   } = params;
 
-  try {
-    // @ts-ignore: No defined types for axios methods
-    return instance[method](path, data);
-  } catch (error) {
-    let errorMessage;
-    if (error.response) {
-      errorMessage = error.response?.data?.message;
-    } else if (error.request) {
-      errorMessage = 'Connection problem';
-    } else {
-      errorMessage = 'Something went wrong';
-    }
+  // @ts-ignore: No defined types for axios methods
+  return instance[method](path, data)
+    .then((response: any) => {
+      onSuccess(response.data);
+    })
+    .catch((error: any) => {
+      let errorMessage = 'Something went wrong';
 
-    return errorHandler(errorMessage);
-  }
+      if (error.response) {
+        errorMessage = error.response?.data?.error;
+      } else if (error.request) {
+        errorMessage = 'Connection problem';
+      }
+
+      onError(errorMessage);
+    });
 };

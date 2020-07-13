@@ -23,35 +23,39 @@ export const getColor = async (params: { dispatch: Function; id: string }) => {
 
   beginApiCall(dispatch);
 
-  const {
-    data: { data },
-  } = await sendRequest({
+  const callback = (data: any) => {
+    dispatch({
+      type: actionTypes.SET_COLOR,
+      payload: data.data,
+    });
+  };
+
+  await sendRequest({
     method: 'get',
     path: `colors/${id}`,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.SET_COLOR,
-    payload: data,
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 
 export const getColors = async (params: { page: number; perPage: number; dispatch: Function }) => {
-  const { page = 1, perPage = 6, dispatch } = params;
+  const { page, perPage, dispatch } = params;
 
   beginApiCall(dispatch);
 
-  const {
-    data: { data: list, total_pages: totalPages },
-  } = await sendRequest({
+  const callback = (data: any) => {
+    const { data: list, total_pages: totalPages } = data;
+
+    dispatch({
+      type: actionTypes.SET_COLORS,
+      payload: { list, totalPages },
+    });
+  };
+
+  await sendRequest({
     method: 'get',
     path: `colors?page=${page}&per_page=${perPage}`,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.SET_COLORS,
-    payload: { list, totalPages },
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };

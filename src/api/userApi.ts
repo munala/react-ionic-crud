@@ -27,33 +27,38 @@ export const getUser = async (params: { dispatch: Function; id: string }) => {
 
   beginApiCall(dispatch);
 
-  const {
-    data: { data },
-  } = await sendRequest({
+  const callback = (data: any) => {
+    console.log(data);
+    dispatch({
+      type: actionTypes.SET_USER,
+      payload: data.data,
+    });
+  };
+
+  await sendRequest({
     method: 'get',
     path: `users/${id}`,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.SET_USER,
-    payload: data,
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 
 export const addUser = async (params: { user: UserInterface; dispatch: Function }) => {
   const { user, dispatch } = params;
 
-  const { data } = await sendRequest({
+  const callback = (data: any) => {
+    dispatch({
+      type: actionTypes.ADD_USER,
+      payload: data,
+    });
+  };
+
+  await sendRequest({
     method: 'post',
     path: 'users',
     data: user,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.ADD_USER,
-    payload: data,
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 
@@ -62,17 +67,20 @@ export const getUsers = async (params: { page: number; perPage: number; dispatch
 
   beginApiCall(dispatch);
 
-  const {
-    data: { data: list, total_pages: totalPages },
-  } = await sendRequest({
+  const callback = (data: any) => {
+    const { data: list, total_pages: totalPages } = data;
+
+    dispatch({
+      type: actionTypes.SET_USERS,
+      payload: { list, totalPages },
+    });
+  };
+
+  await sendRequest({
     method: 'get',
     path: `users?page=${page}&per_page=${perPage}`,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.SET_USERS,
-    payload: { list, totalPages },
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 
@@ -81,16 +89,19 @@ export const updateUser = async (params: { user: UserInterface; dispatch: Functi
 
   beginApiCall(dispatch);
 
-  const { data } = await sendRequest({
+  const callback = (data: any) => {
+    dispatch({
+      type: actionTypes.UPDATE_USER,
+      payload: data,
+    });
+  };
+
+  await sendRequest({
     method: 'put',
     path: `users/${user.id}`,
     data: user,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.UPDATE_USER,
-    payload: data,
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 
@@ -99,14 +110,17 @@ export const deleteUser = async (params: { id: string | undefined; dispatch: Fun
 
   beginApiCall(dispatch);
 
+  const callback = () => {
+    dispatch({
+      type: actionTypes.DELETE_USER,
+      payload: { id },
+    });
+  };
+
   await sendRequest({
     method: 'delete',
     path: `users/${id}`,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  dispatch({
-    type: actionTypes.DELETE_USER,
-    payload: { id },
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };

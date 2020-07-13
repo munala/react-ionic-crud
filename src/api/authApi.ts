@@ -1,9 +1,6 @@
-import { Plugins } from '@capacitor/core';
 import sendRequest from './requestWrapper';
 import * as actionTypes from '../context/actionTypes';
 import { UserInterface } from '../typescript/interfaces';
-
-const { Storage } = Plugins;
 
 const getErrorHandler = (dispatch: Function) => (error: string) => {
   dispatch({
@@ -27,21 +24,19 @@ const authFunction = async (params: { user: UserInterface; dispatch: Function; t
 
   beginApiCall(dispatch);
 
-  const { error, ...authData } = await sendRequest({
+  const callback = (authData: any) => {
+    dispatch({
+      type,
+      payload: authData,
+    });
+  };
+
+  await sendRequest({
     method: 'post',
     path: 'register',
     data: user,
-    errorHandler: getErrorHandler(dispatch),
-  });
-
-  await Storage.set({
-    key: 'token',
-    value: authData.token,
-  });
-
-  dispatch({
-    type,
-    payload: authData,
+    onSuccess: callback,
+    onError: getErrorHandler(dispatch),
   });
 };
 

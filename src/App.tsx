@@ -18,17 +18,6 @@ import './theme/variables.css';
 const App: React.FC = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // TODO: remove this effect
-  useEffect(() => {
-    login({
-      user: {
-        email: 'eve.holt@reqres.in',
-        password: 'cityslicka',
-      },
-      dispatch,
-    });
-  }, []);
-
   return (
     <AppContext.Provider value={{ ...state, dispatch }}>
       <Routes />

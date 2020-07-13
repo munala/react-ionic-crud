@@ -140,6 +140,10 @@ export default (
           ...state.error,
           [payload.page]: payload.error,
         },
+        loading: {
+          ...state.loading,
+          [payload.page]: false,
+        },
       };
 
     case actionTypes.SET_COLOR_PAGINATION:
