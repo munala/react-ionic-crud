@@ -13,12 +13,15 @@ import {
   IonAvatar,
   IonRefresher,
   IonRefresherContent,
+  IonButtons,
+  IonIcon,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { RefresherEventDetail } from '@ionic/core';
+import { exit } from 'ionicons/icons';
 
 import AppContext from '../../context/state';
-import { SET_USER_PAGINATION } from '../../context/actionTypes';
+import { SET_USER_PAGINATION, LOGOUT } from '../../context/actionTypes';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import NewUserInput from '../../components/NewUserInput';
 import { UserInterface } from '../../typescript/interfaces';
@@ -119,6 +122,10 @@ const Users: React.FC = () => {
     await addUser({ user, dispatch });
   };
 
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+  };
+
   if (loading) {
     return <LoadingIndicator />;
   }
@@ -128,6 +135,11 @@ const Users: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Users</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={logout}>
+              <IonIcon icon={exit} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 

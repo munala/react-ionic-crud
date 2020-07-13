@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import AppContext from '../../context/state';
 import AuthInput from '../../components/AuthInput';
@@ -17,16 +17,18 @@ const Auth: React.FC = () => {
     error: { auth: error },
   } = useContext(AppContext);
 
+  const history = useHistory();
+
+  useEffect(() => {
+    if (loggedIn) history.push('/colors');
+  }, [loggedIn]);
+
   const switchMode = () => setTitle(title === 'login' ? 'register' : 'login');
   const authAction = title === 'login' ? login : register;
 
   const submit = (user: { email: string; password: string }) => {
     authAction({ user, dispatch });
   };
-
-  if (loggedIn) {
-    return <Redirect to="/colors" />;
-  }
 
   if (loading) return <LoadingIndicator />;
 

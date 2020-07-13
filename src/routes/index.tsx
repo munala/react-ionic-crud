@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import {
   IonRouterOutlet,
   IonTabs,
@@ -9,6 +9,7 @@ import {
   IonTabBar,
   IonTabButton,
 } from '@ionic/react';
+
 import { IonReactRouter } from '@ionic/react-router';
 import { people, albums } from 'ionicons/icons';
 
@@ -28,27 +29,29 @@ const Routes: React.FC = () => {
   return (
     <IonApp>
       <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route path="/auth" component={Auth} exact />
-            <ProtectedRoute path="/colors" Component={Colors} exact />
-            <ProtectedRoute path="/colors/:id" Component={Color} />
-            <ProtectedRoute path="/users" Component={Users} exact />
-            <ProtectedRoute path="/users/:id" Component={User} />
-            <Route path="/" render={() => <Redirect to="/colors" />} exact />
-          </IonRouterOutlet>
+        <Switch>
+          <Route path="/auth" component={Auth} exact />
+          <IonTabs>
+            <IonRouterOutlet>
+              <ProtectedRoute path="/colors" Component={Colors} exact />
+              <ProtectedRoute path="/colors/:id" Component={Color} exact />
+              <ProtectedRoute path="/users" Component={Users} exact />
+              <ProtectedRoute path="/users/:id" Component={User} exact />
+              <Route path="/" render={() => <Redirect to="/colors" />} exact />
+            </IonRouterOutlet>
 
-          <IonTabBar slot="bottom" style={loggedIn ? {} : { display: 'none' }}>
-            <IonTabButton tab="colors" href="/colors">
-              <IonIcon icon={albums} />
-              <IonLabel>Colors</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="users" href="/users">
-              <IonIcon icon={people} />
-              <IonLabel>Users</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
+            <IonTabBar slot="bottom" style={loggedIn ? {} : { display: 'none' }}>
+              <IonTabButton tab="colors" href="/colors">
+                <IonIcon icon={albums} />
+                <IonLabel>Colors</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="users" href="/users">
+                <IonIcon icon={people} />
+                <IonLabel>Users</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </Switch>
       </IonReactRouter>
     </IonApp>
   );

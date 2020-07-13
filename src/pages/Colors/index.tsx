@@ -13,12 +13,15 @@ import {
   IonTitle,
   IonRefresher,
   IonRefresherContent,
+  IonButtons,
+  IonIcon,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { RefresherEventDetail } from '@ionic/core';
+import { exit } from 'ionicons/icons';
 
 import AppContext from '../../context/state';
-import { SET_COLOR_PAGINATION } from '../../context/actionTypes';
+import { SET_COLOR_PAGINATION, LOGOUT } from '../../context/actionTypes';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { ColorInterface } from '../../typescript/interfaces';
 import { getColors } from '../../api/colorApi';
@@ -110,6 +113,10 @@ const Colors: React.FC = () => {
   let perPageValues = new Array(MAX_PER_PAGE);
   perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
 
+  const logout = () => {
+    dispatch({ type: LOGOUT });
+  };
+
   if (loading) return <LoadingIndicator />;
 
   return (
@@ -117,6 +124,11 @@ const Colors: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Colors</IonTitle>
+          <IonButtons slot="end">
+            <IonButton onClick={logout}>
+              <IonIcon icon={exit} />
+            </IonButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
