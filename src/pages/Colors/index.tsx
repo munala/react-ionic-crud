@@ -26,8 +26,6 @@ import LoadingIndicator from '../../components/LoadingIndicator';
 import { ColorInterface } from '../../typescript/interfaces';
 import { getColors } from '../../api/colorApi';
 
-import './styles.css';
-
 const MAX_PER_PAGE = 20;
 
 const Colors: React.FC = () => {

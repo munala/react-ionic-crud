@@ -16,8 +16,6 @@ import { getColor } from '../../api/colorApi';
 
 import AppContext from '../../context/state';
 
-import './styles.css';
-
 const Color: React.FC = () => {
   const {
     color,

@@ -31,6 +31,7 @@ const Routes: React.FC = () => {
       <IonReactRouter>
         <Switch>
           <Route path="/auth" component={Auth} exact />
+
           <IonTabs>
             <IonRouterOutlet>
               <ProtectedRoute path="/colors" Component={Colors} exact />
@@ -40,7 +41,7 @@ const Routes: React.FC = () => {
               <Route path="/" render={() => <Redirect to="/colors" />} exact />
             </IonRouterOutlet>
 
-            <IonTabBar slot="bottom" style={loggedIn ? {} : { display: 'none' }}>
+            <IonTabBar slot="bottom" className={loggedIn ? '' : 'hidden-tabs'}>
               <IonTabButton tab="colors" href="/colors">
                 <IonIcon icon={albums} />
                 <IonLabel>Colors</IonLabel>

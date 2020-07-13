@@ -32,6 +32,10 @@ export default async (params: RequestArgumentInterface) => {
 
       if (error.response) {
         errorMessage = error.response?.data?.error;
+
+        if (error.response.status === 404) {
+          errorMessage = 'User not found';
+        }
       } else if (error.request) {
         errorMessage = 'Connection problem';
       }

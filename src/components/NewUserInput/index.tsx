@@ -88,7 +88,7 @@ const NewUserInput = (props: { onSubmit: Function }) => {
               <IonInput
                 name="first_name"
                 value={firstName}
-                placeholder="Enter First Name"
+                placeholder="Enter first name"
                 onIonChange={(e) => setFirstName(e.detail.value!)}
                 clearInput
                 required
@@ -106,7 +106,7 @@ const NewUserInput = (props: { onSubmit: Function }) => {
               <IonInput
                 name="lastName"
                 value={lastName}
-                placeholder="Enter Last Name"
+                placeholder="Enter last name"
                 onIonChange={(e) => setLastName(e.detail.value!)}
                 clearInput
                 required
@@ -125,7 +125,7 @@ const NewUserInput = (props: { onSubmit: Function }) => {
                 name="email"
                 value={email}
                 type="email"
-                placeholder="Enter Email"
+                placeholder="Enter email"
                 onIonChange={(e) => setEmail(e.detail.value!)}
                 clearInput
                 required

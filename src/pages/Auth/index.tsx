@@ -5,7 +5,6 @@ import AppContext from '../../context/state';
 import AuthInput from '../../components/AuthInput';
 import { login, register } from '../../api/authApi';
 import LoadingIndicator from '../../components/LoadingIndicator';
-import './styles.css';
 
 const Auth: React.FC = () => {
   const [title, setTitle] = useState('login');

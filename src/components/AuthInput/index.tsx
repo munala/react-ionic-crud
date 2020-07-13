@@ -66,11 +66,13 @@ const AuthForm = (props: {
           <IonTitle>{title.toUpperCase()}</IonTitle>
         </IonToolbar>
       </IonHeader>
+
       {error && (
         <IonItem>
           <IonLabel color="danger">{error}</IonLabel>
         </IonItem>
       )}
+
       <IonContent>
         <IonList>
           <IonItemDivider>Email</IonItemDivider>
@@ -79,7 +81,7 @@ const AuthForm = (props: {
               name="email"
               value={email}
               type="email"
-              placeholder="Enter Email"
+              placeholder="Enter email"
               onIonChange={(e) => setEmail(e.detail.value!)}
               clearInput
               required
@@ -98,7 +100,7 @@ const AuthForm = (props: {
               name="password"
               value={password}
               type="password"
-              placeholder="Enter Password"
+              placeholder="Enter password"
               onIonChange={(e) => setPassword(e.detail.value!)}
               clearInput
               required
