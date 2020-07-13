@@ -29,6 +29,11 @@ export interface AuthInterface {
   token?: string | null;
 }
 
+export interface PaginationInterface {
+  page: number;
+  perPage: number;
+}
+
 export interface AppStateInterface {
   user: UserInterface;
   users: UserListInterface;
@@ -44,6 +49,10 @@ export interface AppStateInterface {
     user?: string | null;
     color?: string | null;
     auth?: string | null;
+  };
+  pagination: {
+    colors: PaginationInterface;
+    users: PaginationInterface;
   };
   dispatch: Function; // this is to allow passing dispatch inside value of context provider
 }

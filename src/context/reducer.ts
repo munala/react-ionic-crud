@@ -142,6 +142,31 @@ export default (
         },
       };
 
+    case actionTypes.SET_COLOR_PAGINATION:
+      console.log(payload);
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          colors: {
+            ...state.pagination.colors,
+            ...payload,
+          },
+        },
+      };
+
+    case actionTypes.SET_USER_PAGINATION:
+      return {
+        ...state,
+        pagination: {
+          ...state.pagination,
+          users: {
+            ...state.pagination.users,
+            ...payload,
+          },
+        },
+      };
+
     default:
       return state;
   }

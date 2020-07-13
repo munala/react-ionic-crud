@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import { RefresherEventDetail } from '@ionic/core';
 
 import AppContext from '../../context/state';
+import { SET_COLOR_PAGINATION } from '../../context/actionTypes';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import { ColorInterface } from '../../typescript/interfaces';
 import { getColors } from '../../api/colorApi';
@@ -27,49 +28,71 @@ import './styles.css';
 const MAX_PER_PAGE = 20;
 
 const Colors: React.FC = () => {
-  const [pageVariables, setPageVariables] = useState({
-    page: 1,
-    perPage: MAX_PER_PAGE,
-  });
-
-  const { page, perPage } = pageVariables;
-
-  const history = useHistory();
-
-  // generate and fill array with values from 1 to MAX_PER_PAGE
-  let perPageValues = new Array(MAX_PER_PAGE);
-  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
-
   const {
     colors: { list: colors, totalPages },
     loading: { color: loading },
     error: { color: error },
+    pagination: { colors: pageVariables },
     dispatch,
   } = useContext(AppContext);
+
+  const [statePagination, setPagination] = useState(pageVariables);
+  const [mounted, setMounted] = useState(false);
+  const history = useHistory();
+
+  const { page, perPage } = pageVariables;
 
   const getColorList = async () => {
     await getColors({ dispatch, page, perPage });
   };
 
+  /**
+    Get colors when the component mounts and there are no colors in state
+    Set `mounted` to true to indicate the component has mounted
+  */
   useEffect(() => {
     if (colors.length === 0) getColorList();
+    setMounted(true);
   }, []);
 
+  /**
+    Get detect changes in global state pagination and
+    update local pagination to match
+  */
   useEffect(() => {
-    if (colors.length === 0) getColorList();
-  }, [perPage, page]);
+    if (
+      statePagination.perPage !== pageVariables.perPage
+      || statePagination.page !== pageVariables.page
+    ) {
+      setPagination(pageVariables);
+    }
+  }, [pageVariables.perPage, pageVariables.page]);
+
+  /**
+    Detect changes in local pagination
+    Load colors only when the component had already been mounted
+  */
+  useEffect(() => {
+    if (mounted) getColorList();
+  }, [statePagination.perPage, statePagination.page]);
 
   const setPerPageValue = (value: string) => {
-    setPageVariables({
-      page: 1,
-      perPage: parseInt(value, 10),
+    dispatch({
+      type: SET_COLOR_PAGINATION,
+      payload: {
+        page: 1,
+        perPage: parseInt(value, 10),
+      },
     });
   };
 
   const setPage = (pageValue: number) => {
-    setPageVariables({
-      ...pageVariables,
-      page: pageValue,
+    dispatch({
+      type: SET_COLOR_PAGINATION,
+      payload: {
+        ...pageVariables,
+        page: pageValue,
+      },
     });
   };
 
@@ -82,6 +105,10 @@ const Colors: React.FC = () => {
 
     event.detail.complete();
   };
+
+  // generate and fill array with values from 1 to MAX_PER_PAGE
+  let perPageValues = new Array(MAX_PER_PAGE);
+  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
 
   if (loading) return <LoadingIndicator />;
 

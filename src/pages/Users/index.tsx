@@ -18,6 +18,7 @@ import { useHistory } from 'react-router-dom';
 import { RefresherEventDetail } from '@ionic/core';
 
 import AppContext from '../../context/state';
+import { SET_USER_PAGINATION } from '../../context/actionTypes';
 import LoadingIndicator from '../../components/LoadingIndicator';
 import NewUserInput from '../../components/NewUserInput';
 import { UserInterface } from '../../typescript/interfaces';
@@ -31,49 +32,72 @@ const MAX_PER_PAGE = 20;
 const DEFAULT_AVATAR_URL = logo;
 
 const Users: React.FC = () => {
-  const [pageVariables, setPageVariables] = useState({
-    page: 1,
-    perPage: MAX_PER_PAGE,
-  });
-
-  const { page, perPage } = pageVariables;
-
-  const history = useHistory();
-
   const {
     users: { list: users, totalPages },
     loading: { user: loading },
     error: { user: error },
+    pagination: { users: pageVariables },
     dispatch,
   } = useContext(AppContext);
 
+  const [statePagination, setPagination] = useState(pageVariables);
+  const [mounted, setMounted] = useState(false);
+  const history = useHistory();
+
+  const { page, perPage } = pageVariables;
+
+  /**
+    Get users when the component mounts and there are no users in global state
+    Set `mounted` to true to indicate the component has mounted
+  */
   useEffect(() => {
     if (users.length === 0) getUserList();
+    setMounted(true);
   }, []);
 
+  /**
+    Detect changes in global state pagination
+    Update local pagination to match
+  */
   useEffect(() => {
-    if (users.length === 0) getUserList();
-  }, [perPage, page]);
+    if (
+      statePagination.perPage !== pageVariables.perPage
+      || statePagination.page !== pageVariables.page
+    ) {
+      setPagination(pageVariables);
+    }
+  }, [pageVariables.perPage, pageVariables.page]);
 
-  // generate and fill array with values from 1 to MAX_PER_PAGE
-  let perPageValues = new Array(MAX_PER_PAGE);
-  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
+  /**
+    Detect changes in local pagination
+    Load users only when the component had already been mounted
+    to prevent reloading of users between navigation state changes
+  */
+  useEffect(() => {
+    if (mounted) getUserList();
+  }, [statePagination.perPage, statePagination.page]);
 
   const getUserList = async () => {
     await getUsers({ dispatch, page, perPage });
   };
 
   const setPerPageValue = (value: string) => {
-    setPageVariables({
-      page: 1,
-      perPage: parseInt(value, 10),
+    dispatch({
+      type: SET_USER_PAGINATION,
+      payload: {
+        page: 1,
+        perPage: parseInt(value, 10),
+      },
     });
   };
 
   const setPage = (pageValue: number) => {
-    setPageVariables({
-      ...pageVariables,
-      page: pageValue,
+    dispatch({
+      type: SET_USER_PAGINATION,
+      payload: {
+        ...pageVariables,
+        page: pageValue,
+      },
     });
   };
 
@@ -86,6 +110,10 @@ const Users: React.FC = () => {
 
     event.detail.complete();
   };
+
+  // generate and fill array with values from 1 to MAX_PER_PAGE
+  let perPageValues = new Array(MAX_PER_PAGE);
+  perPageValues = [...perPageValues].map((number: undefined, index: number) => index + 1);
 
   const submitUser = async (user: UserInterface) => {
     await addUser({ user, dispatch });

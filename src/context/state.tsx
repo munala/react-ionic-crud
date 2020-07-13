@@ -1,6 +1,8 @@
 import { createContext } from 'react';
 import * as interfaces from '../typescript/interfaces';
 
+const MAX_PER_PAGE = 20;
+
 export const initialState: interfaces.AppStateInterface = {
   user: {},
   color: {},
@@ -25,6 +27,16 @@ export const initialState: interfaces.AppStateInterface = {
     user: null,
     color: null,
     auth: null,
+  },
+  pagination: {
+    colors: {
+      page: 1,
+      perPage: MAX_PER_PAGE,
+    },
+    users: {
+      page: 1,
+      perPage: MAX_PER_PAGE,
+    },
   },
   dispatch: () => {},
 };
