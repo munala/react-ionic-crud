@@ -7,7 +7,7 @@ This is a cross-platform mobile app I created to consume `reqres.in` REST API to
 - Run `git clone https://github.com/munala/react-ionic-crud.git && cd react-ionic-crud`.
 - Install Ionic CLI globally by running `npm install -g @ionic/cli`
 - Run `npm install`.
-- Create an `.env` inside the project's root folder and add `SKIP_PREFLIGHT_CHECK=true` to skip eslint package check incase to come across eslint issues.
+- Create an `.env` inside the project's root folder and add `SKIP_PREFLIGHT_CHECK=true` to skip eslint package check incase you come across eslint issues.
 
 ## Running
 
