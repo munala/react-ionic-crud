@@ -1,3 +1,7 @@
 .field {
   width: 80px;
 }
+
+.bottom-padding {
+  height: 80px;
+}

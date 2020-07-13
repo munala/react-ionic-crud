@@ -195,6 +195,8 @@ const Users: React.FC = () => {
           Next
         </IonButton>
       </IonItem>
+
+      <IonItem className="bottom-padding" />
     </IonContent>
   );
 };
