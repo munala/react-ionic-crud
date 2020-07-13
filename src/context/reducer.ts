@@ -147,7 +147,6 @@ export default (
       };
 
     case actionTypes.SET_COLOR_PAGINATION:
-      console.log(payload);
       return {
         ...state,
         pagination: {

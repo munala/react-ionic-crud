@@ -28,7 +28,6 @@ export const getUser = async (params: { dispatch: Function; id: string }) => {
   beginApiCall(dispatch);
 
   const callback = (data: any) => {
-    console.log(data);
     dispatch({
       type: actionTypes.SET_USER,
       payload: data.data,
